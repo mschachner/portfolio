@@ -18,7 +18,7 @@ jobs:
           git clone --depth 1 git@github.com:mschachner/site.git site
           rm -rf site/portfolio            # clear stale hashed assets
           mkdir -p site/portfolio
-          cp -R site/portfolio/     # plain static: copy only what the browser needs instead
+          cp -R assets/ index.html site/portfolio/     # plain static: copy only what the browser needs instead
           cd site
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
