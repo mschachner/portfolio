@@ -9,13 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Build step — only for projects with a build step; for plain static
-      # projects, skip this and copy the source files directly below.
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci && npm run build
-
       - name: Push to site repo
         env:
           DEPLOY_KEY: ${{ secrets.SITE_DEPLOY_KEY }}
@@ -23,12 +16,12 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add - <<< "$DEPLOY_KEY"
           git clone --depth 1 git@github.com:mschachner/site.git site
-          rm -rf site/schachner-portfolio            # clear stale hashed assets
-          mkdir -p site/schachner-portfolio
-          cp -R dist/. site/schachner-portfolio/     # plain static: copy only what the browser needs instead
+          rm -rf site/portfolio            # clear stale hashed assets
+          mkdir -p site/portfolio
+          cp -R dist/. site/portfolio/     # plain static: copy only what the browser needs instead
           cd site
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add schachner-portfolio
-          git diff --cached --quiet || git commit -m "Deploy schachner-portfolio from ${GITHUB_SHA::7}"
+          git add portfolio
+          git diff --cached --quiet || git commit -m "Deploy portfolio from ${GITHUB_SHA::7}"
           git push
